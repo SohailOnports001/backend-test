@@ -61,7 +61,7 @@ module.exports.fetchUser = async (req,res)=>
     try
     {
         console.log(`${fileName} fetchUser() called`);
-        console.log(req.query);
+        //console.log(req.query);
         let keys = Object.keys(req.query);
         let values = Object.values(req.query);
         let details = await testModel.fetchUser(keys, values);
@@ -100,7 +100,7 @@ module.exports.updateUser = async (req,res)=>
     try
     {
         console.log(`${fileName} updateUser() called`);
-        console.log(req.query);
+        //console.log(req.query);
         let keys = Object.keys(req.query);
         let values = Object.values(req.query);
         if(keys.length>1)
@@ -151,7 +151,7 @@ module.exports.deleteUser = async (req,res)=>
     try
     {
         console.log(`${fileName} deleteUser() called`);
-        console.log(req.query);
+        //console.log(req.query);
         let keys = Object.keys(req.query);
         let values = Object.values(req.query);
         // if(keys.length>0)
