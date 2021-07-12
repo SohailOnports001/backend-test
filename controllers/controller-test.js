@@ -154,8 +154,8 @@ module.exports.deleteUser = async (req,res)=>
         console.log(req.query);
         let keys = Object.keys(req.query);
         let values = Object.values(req.query);
-        if(keys.length>0)
-        {
+        // if(keys.length>0)
+        // {
 
             let details = await testModel.deleteUser(keys, values);
             if(details.rowCount>0)
@@ -176,16 +176,16 @@ module.exports.deleteUser = async (req,res)=>
                     data:[]
                 })
             }
-        }
-        else
-        {
-            return res.status(404).json({
-                status:`error`,
-                message:`parameters not found!`,
-                statusCode:404,
-                data:[]
-            })
-        }
+        // }
+        // else
+        // {
+        //     return res.status(404).json({
+        //         status:`error`,
+        //         message:`parameters not found!`,
+        //         statusCode:404,
+        //         data:[]
+        //     })
+        // }
     }
     catch(error)
     {
