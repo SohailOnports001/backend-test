@@ -151,7 +151,6 @@ module.exports.deleteUser = async (req,res)=>
     try
     {
         console.log(`${fileName} deleteUser() called`);
-        //console.log(req.query);
         let keys = Object.keys(req.query);
         let values = Object.values(req.query);
         // if(keys.length>0)
