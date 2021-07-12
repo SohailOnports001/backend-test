@@ -149,7 +149,7 @@ module.exports.updateUser = async (req,res)=>
 module.exports.deleteUser = async (req,res)=>
 {
     try
-    {
+    { 
         console.log(`${fileName} deleteUser() called`);
         let keys = Object.keys(req.query);
         let values = Object.values(req.query);
