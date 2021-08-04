@@ -1,4 +1,6 @@
-require('dotenv').config();
+// require('dotenv').config();
+import dotenv from 'dotenv'
+dotenv.config();
 const config = {
     serviceName: process.env.SERVICENAME || 'PostgresDB',
     port: process.env.PORT || 3000,
@@ -13,7 +15,7 @@ const config = {
         ssl: { rejectUnauthorized: false },
         idleTimeoutMillis: parseInt(process.env.DB_IDLE_TIMEOUT_MS) || 30000
     }
-
 }
 
-module.exports = config;
+export default {config}
+// exports = {config};

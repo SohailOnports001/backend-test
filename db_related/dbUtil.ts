@@ -1,7 +1,8 @@
-const { Pool } = require('pg');
-const config = require('../config');
-// const logger = require('../other/logger');
-// console.log("Config Loading")
+// const { Pool } = require('pg');
+import {Pool} from 'pg';
+const config = require('../config').default.config;
+
+// console.log("Config Loading",config)
 const pgconfig = {
     user: config.db.user,
     database: config.db.database,
@@ -13,9 +14,9 @@ const pgconfig = {
     idleTimeoutMillis: config.db.idleTimeoutMillis
 }
 // console.log("Config : ",pgconfig);
-const pool = new Pool(pgconfig);
+const pool:any = new Pool(pgconfig);
 
-// console.log(`DB Connection Settings: ${JSON.stringify(pgconfig)}`);
+console.log(`DB Connection Settings: ${JSON.stringify(pgconfig)}`);
 
 pool.on('error', function (err, client) {
     console.log(`idle client error, ${err.message} | ${err.stack}`);
@@ -33,7 +34,7 @@ pool.on('error', function (err, client) {
  * @param data: the data to be stored
  * @return result
  */
-module.exports.sqlToDB = async (sql, data) => {
+const sqlToDB = async (sql:any, data:any) => {
     console.log(`sqlToDB() sql: ${sql} | data: ${data}`);
     try {
         let result = await pool.query(sql, data);
@@ -47,7 +48,7 @@ module.exports.sqlToDB = async (sql, data) => {
  * Retrieve a SQL client with transaction from connection pool. If the client is valid, either
  * COMMMIT or ROALLBACK needs to be called at the end before releasing the connection back to pool.
  */
-module.exports.getTransaction = async () => {
+const getTransaction = async () => {
     console.log(`getTransaction()`);
     const client = await pool.connect();
     try {
@@ -64,14 +65,14 @@ module.exports.getTransaction = async () => {
  * @param data: the data to be stored
  * @return result
  */
-module.exports.sqlExecSingleRow = async (client, sql, data) => {
+const sqlExecSingleRow = async (client:any, sql:any, data:any) => {
     console.log(`sqlExecSingleRow() sql: ${sql} | data: ${data}`);
     try {
         let result = await client.query(sql, data);
         console.log(`sqlExecSingleRow(): ${result.command} | ${result.rowCount}`);
         return result
     } catch (error) {
-        logger.error(`sqlExecSingleRow() error: ${error.message} | sql: ${sql} | data: ${data}`);
+        console.log(`sqlExecSingleRow() error: ${error.message} | sql: ${sql} | data: ${data}`);
         throw new Error(error.message);
     }
 }
@@ -82,7 +83,7 @@ module.exports.sqlExecSingleRow = async (client, sql, data) => {
  * @param data: the data to be stored
  * @return result
  */
-module.exports.sqlExecMultipleRows = async (client, sql, data) => {
+const sqlExecMultipleRows = async (client:any, sql:any, data:any) => {
     console.log(`inside sqlExecMultipleRows()`);
     let result = [];
     if (data.length !== 0) {
@@ -93,12 +94,12 @@ module.exports.sqlExecMultipleRows = async (client, sql, data) => {
                 let res = await client.query(sql, item);
                 result.push(res.rows[0]);
             } catch (error) {
-                logger.error(`sqlExecMultipleRows() error: ${error}`);
+                console.log(`sqlExecMultipleRows() error: ${error}`);
                 throw new Error(error.message);
             }
         }
     } else {
-        logger.error(`sqlExecMultipleRows(): No data available`);
+        console.log(`sqlExecMultipleRows(): No data available`);
         throw new Error('sqlExecMultipleRows(): No data available');
     }
     return result;
@@ -107,10 +108,10 @@ module.exports.sqlExecMultipleRows = async (client, sql, data) => {
 /*
  * Rollback transaction
  */
-module.exports.rollback = async (client) => {
+const rollback = async (client:any) => {
     if (typeof client !== 'undefined' && client) {
         try {
-            logger.info(`sql transaction rollback`);
+            console.log(`sql transaction rollback`);
             await client.query('ROLLBACK');
         } catch (error) {
             throw new Error(error.message);
@@ -118,14 +119,14 @@ module.exports.rollback = async (client) => {
             client.release();
         }
     } else {
-        logger.warn(`rollback() not excuted. client is not set`);
+        console.log(`rollback() not excuted. client is not set`);
     }
 }
 
 /*
  * Commit transaction
  */
-module.exports.commit = async (client) => {
+const commit = async (client:any) => {
     try {
         await client.query('COMMIT');
     } catch (error) {
@@ -133,4 +134,13 @@ module.exports.commit = async (client) => {
     } finally {
         client.release();
     }
+}
+
+export default{
+    sqlToDB,
+    getTransaction,
+    sqlExecMultipleRows,
+    sqlExecSingleRow,
+    rollback,
+    commit
 }

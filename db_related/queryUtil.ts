@@ -1,4 +1,4 @@
-const insertIntoTable = (tableName, columns) => {
+const insertIntoTable = (tableName:string, columns:string[]) => {
     
     let sqlQuery = `INSERT INTO "${tableName}" (`;
 
@@ -22,7 +22,7 @@ const insertIntoTable = (tableName, columns) => {
     return sqlQuery;
 }
 
-const updateTable = (tableName, columns, conditionKey) => {
+const updateTable = (tableName:string, columns:string[], conditionKey:string) => {
     // var query = ['UPDATE products'];
     // query.push('SET');
 
@@ -62,7 +62,7 @@ const updateTable = (tableName, columns, conditionKey) => {
     return query.join(' ');
 }
 
-const selectFromTable = (tableName, selectColumns) => {
+const selectFromTable = (tableName:string, selectColumns:string[]) => {
     let sqlQuery = "SELECT ";
     for(let i=0; i<selectColumns.length; i++){
         sqlQuery += selectColumns[i];
@@ -76,7 +76,7 @@ const selectFromTable = (tableName, selectColumns) => {
     return sqlQuery;
 }
 
-module.exports = {
+export default{
     insertIntoTable,
     selectFromTable,
     updateTable

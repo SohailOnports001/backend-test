@@ -1,12 +1,8 @@
-const dbUtil = require("../db_related/dbUtil");
-const {
-   insertIntoTable,
-   selectFromTable,
-   updateTable
-} = require('../db_related/queryUtil');
+// const dbUtil = require("../db_related/dbUtil");
+import dbUtil from "../db_related/dbUtil";
 const fileName = 'testModel.js';
 
-module.exports.createUser = async (key,name,age,phonenumber)=>
+const createUser = async (key:any,name:any,age:any,phonenumber:any)=>
 {
     console.log(`${fileName} createUser() called`)
     let sqlQuery = `INSERT INTO "User" (key,name,age,phonenumber) values($1,$2,$3,$4) returning *`;
@@ -26,7 +22,7 @@ module.exports.createUser = async (key,name,age,phonenumber)=>
     }
 }
 
-module.exports.fetchUser = async (keys,values)=>
+const fetchUser = async (keys,values)=>
 {
     console.log(`${fileName} fetchUser() called`)
     let sqlQuery;
@@ -54,7 +50,7 @@ module.exports.fetchUser = async (keys,values)=>
     }
 }
 
-module.exports.updateUser = async (keys,values)=>
+const updateUser = async (keys,values)=>
 {
     console.log(`${fileName} updateUser() called`)
     let sqlQuery = `update "User" set ${keys[1]}= $2 where ${keys[0]}=$1`;
@@ -74,7 +70,7 @@ module.exports.updateUser = async (keys,values)=>
     }
 }
 
-module.exports.deleteUser = async (keys,values)=>
+const deleteUser = async (keys,values)=>
 {
     console.log(`${fileName} deleteUser() called`)
     let sqlQuery;
@@ -100,4 +96,11 @@ module.exports.deleteUser = async (keys,values)=>
         await dbUtil.rollback(client);
         throw new Error(error.message);
     }
+}
+
+export default{
+    createUser,
+    fetchUser,
+    updateUser,
+    deleteUser
 }
